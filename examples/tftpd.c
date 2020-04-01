@@ -90,8 +90,8 @@ typedef struct Request {
   int                sanitize;
 } Request;
 
-#define DBG(...) do {                                                         \
-                   if (debug)                                                 \
+define DBG(...) do {                                                         \
+                   /*if (debug)*/                                                 \
                      fprintf(stderr, __VA_ARGS__);                            \
                  } while (0)
 
@@ -425,6 +425,7 @@ static void *tftp_thread(void *arg) {
  * multicasting).
  */
 int main(int argc, char *argv[]) {
+    DBG("%s argc=%d\n", _FUNCTION__, argc);
   static const struct option long_opts[] = {
     /* Set file name for "core" snapshot file of running process.            */
     { "core",      1, NULL, 'c' },
@@ -460,21 +461,27 @@ int main(int argc, char *argv[]) {
   /* Parse command line options.                                             */
   for (;;) {
     int idx = 0;
+    DBG("%s idx=%d\n", _FUNCTION__, idx);
     int c   = getopt_long(argc, argv, opt_string, long_opts, &idx);
+    DBG("%s c=%d\n", _FUNCTION__, c);
     if (c == -1)
       break;
     switch (c) {
     case 'c':
       core_name = optarg;
+        DBG("%s core_name=%d\n", _FUNCTION__, core_name);
       break;
     case 'd':
       debug = 1;
+      DBG("%s ddebug=%d\n", _FUNCTION__, debug);
       break;
     case 'n':
       no_ack = 1;
+      DBG("%s no_ack=%d\n", _FUNCTION__, no_ack);
       break;
     case 'p':
       port = atoi(optarg);
+      DBG("%s port=%d\n", _FUNCTION__, port);
       if (port <= 0 || port > 65535) {
         fprintf(stderr, "Port out of range: %d\n", port);
         exit(1);
@@ -482,9 +489,11 @@ int main(int argc, char *argv[]) {
       break;
     case 's':
       sanitize = 1;
+      DBG("%s sanitize=%d\n", _FUNCTION__, sanitize);
       break;
     case 'h':
     default:
+      DBG("%s help=%d\n", _FUNCTION__, 1);
       fprintf(stderr,
            "Usage: %s --core <name> --debug --help --port <port> --noack "
            "--sanitize\n",
